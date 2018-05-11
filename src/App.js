@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './css/pure-min.css';
 import './css/side-menu.css';
 import $ from 'jquery';
 import InputCustomizado from './componentes/InputCustomizado';
+import ButtonCustomizado from './componentes/ButtonCustomizado';
+
 
 class App extends Component {
 
@@ -18,7 +19,7 @@ class App extends Component {
 
   componentWillMount() {
     $.ajax({
-      url: "http://cdc-react.herokuapp.com/api/autores",
+      url: "http://localhost:8080/autores",
       dataType: 'json',
       success: function (resposta) {
         this.setState({ lista: resposta });
@@ -29,15 +30,15 @@ class App extends Component {
 
   enviaForm(evento) {
     evento.preventDefault();
-    console.log(JSON.stringify({ nome: this.state.nome, email: this.state.email, senha: this.state.senha }));
     $.ajax({
-      url: 'http://cdc-react.herokuapp.com/api/autores',
+      url: 'http://localhost:8080/autores',
       contentType: 'application/json',
       dataType: 'json',
       type: 'post',
       data: JSON.stringify({ nome: this.state.nome, email: this.state.email, senha: this.state.senha }),
       success: function (resposta) {
-        this.setState({ lista: resposta });
+        this.componentWillMount();
+        // this.setState({ lista: resposta });
       }.bind(this),
       error: function (resposta) {
         console.log("erro");
@@ -89,10 +90,8 @@ class App extends Component {
                 <InputCustomizado id="email" type="email" name="email" value={this.state.email} onChange={this.setEmail} label="Email" />
                 <InputCustomizado id="senha" type="password" name="senha" value={this.state.senha} onChange={this.setSenha} label="Senha" />
 
-                <div className="pure-control-group">
-                  <label></label>
-                  <button type="submit" className="pure-button pure-button-primary">Gravar</button>
-                </div>
+                <ButtonCustomizado className="pure-button pure-button-primary" type="submit" label="Gravar" />
+                
               </form>
 
             </div>
